@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wall Clock</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+
+        .clock-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border: 5px solid #000;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .clock-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('background-image.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: -1; /* Ensure the background is behind the clock */
+        }
+
+        .clock {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 5px solid #fff;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.7); /* Make it semi-transparent */
+        }
+
+        .hand {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: 50% 100%;
+            transform: translate(-50%, -100%) rotate(0deg);
+            transition: transform 0.05s ease-in-out; /* Smooth transition */
+        }
+
+        .hour {
+            width: 6px;
+            height: 60px;
+            background: #000;
+            z-index: 3;
+        }
+
+        .minute {
+            width: 4px;
+            height: 90px;
+            background: #555;
+            z-index: 2;
+        }
+
+        .second {
+            width: 2px;
+            height: 110px;
+            background: red;
+            z-index: 1;
+        }
+
+        /* Number Styling */
+        .number {
+            position: absolute;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            color: white;
+            z-index: 2;
+            transform-origin: center center;
+        }
+
+        /* Correct Number Positioning on Clock */
+        #number1 { top: 10px; left: 50%; transform: translateX(-50%); }
+        #number2 { top: 20%; left: 80%; transform: translateX(-50%); }
+        #number3 { top: 50%; left: 90%; transform: translateY(-50%) translateX(-50%); }
+        #number4 { bottom: 20%; left: 80%; transform: translateX(-50%); }
+        #number5 { bottom: 10px; left: 50%; transform: translateX(-50%); }
+        #number6 { bottom: 20%; left: 20%; transform: translateX(-50%); }
+        #number7 { top: 50%; left: 10%; transform: translateY(-50%) translateX(-50%); }
+        #number8 { top: 20%; left: 20%; transform: translateX(-50%); }
+        #number9 { top: 10px; left: 50%; transform: translateX(-50%); }
+        #number10 { top: 20%; left: 20%; transform: translateX(-50%); }
+        #number11 { top: 50%; left: 20%; transform: translateY(-50%) translateX(-50%); }
+        #number12 { bottom: 20%; left: 50%; transform: translateX(-50%); }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="clock-background"></div>
+        <div class="clock">
+            <!-- Clock Numbers -->
+            <div class="number" id="number12">12</div>
+            <div class="number" id="number1">1</div>
+            <div class="number" id="number2">2</div>
+            <div class="number" id="number3">3</div>
+            <div class="number" id="number4">4</div>
+            <div class="number" id="number5">5</div>
+            <div class="number" id="number6">6</div>
+            <div class="number" id="number7">7</div>
+            <div class="number" id="number8">8</div>
+            <div class="number" id="number9">9</div>
+            <div class="number" id="number10">10</div>
+            <div class="number" id="number11">11</div>
+
+            <!-- Clock Hands -->
+            <div class="hand hour" id="hour-hand"></div>
+            <div class="hand minute" id="minute-hand"></div>
+            <div class="hand second" id="second-hand"></div>
+        </div>
+    </div>
+
+    <script>
+        const hourHand = document.getElementById('hour-hand');
+        const minuteHand = document.getElementById('minute-hand');
+        const secondHand = document.getElementById('second-hand');
+
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            // Hour hand rotation: (360 / 12) for each hour, and add a fraction of the minute for smooth movement
+            const hourRotation = (360 / 12) * (hours % 12) + (30 / 60) * minutes;
+            // Minute hand rotation: (360 / 60) for each minute, add a fraction of the second for smooth movement
+            const minuteRotation = (360 / 60) * minutes + (6 / 60) * seconds;
+            // Second hand rotation: (360 / 60) for each second
+            const secondRotation = (360 / 60) * seconds;
+
+            hourHand.style.transform = `translate(-50%, -100%) rotate(${hourRotation}deg)`;
+            minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteRotation}deg)`;
+            secondHand.style.transform = `translate(-50%, -100%) rotate(${secondRotation}deg)`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // Initialize the clock immediately
+    </script>
+</body>
+</html>
